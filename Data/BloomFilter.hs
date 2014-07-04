@@ -77,6 +77,7 @@ import Control.Monad.ST (ST, runST)
 import Control.DeepSeq (NFData(..))
 import Data.Array.Base (unsafeAt)
 import qualified Data.Array.ST as ST
+import qualified Data.Array.Unsafe as U
 import Data.Array.Unboxed (UArray)
 import Data.Bits ((.&.))
 import Data.BloomFilter.Util (FastShift(..), (:*)(..))
@@ -141,7 +142,7 @@ freeze mb = B (MB.hashes mb) (MB.shift mb) (MB.mask mb) `liftM`
 -- occur.  For a safer creation interface, use 'freeze' or 'create'.
 unsafeFreeze :: MBloom s a -> ST s (Bloom a)
 unsafeFreeze mb = B (MB.hashes mb) (MB.shift mb) (MB.mask mb) `liftM`
-                    ST.unsafeFreeze (MB.bitArray mb)
+                    U.unsafeFreeze (MB.bitArray mb)
 
 -- | Copy an immutable Bloom filter to create a mutable one.  There is
 -- no non-copying equivalent.
